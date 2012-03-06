@@ -11,3 +11,4 @@ project/plugins/project
 .idea_modules
 .project
 .classpath
+.settings
