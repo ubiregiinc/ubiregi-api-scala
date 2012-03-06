@@ -8,6 +8,22 @@ import net.liftweb.json.JsonParser
 import net.liftweb.json.JsonAST
 import UbiregiClient._
 
+/** ==Overview==
+ * Provides features to access Ubiregi API(version 3) easily.
+ * Cumbersome procedures for accessing Ubiregi API are encapsulated in this class.
+ * 
+ * Typical use case is as the followings:
+ * {{{
+ * val client = UbiregiClient("http://localhost:3030/api/3/", "secret", "apiToken")
+ * val response: JsonAST.JValue = client.jsonGet("accounts/current")
+ * }}}
+ * 
+ * Note that response is not a string, but a value of [[net.liftweb.json.JsonAST.JValue]] 
+ * when using  UbiregiClient#jsonGet() or UbiregiClient#jsonPost().
+ * 
+ * If you want to get the string response, you can use UbiregiClient#rawGet()
+ * or UbiregiClient#rawPost() instead.
+ */
 class UbiregiClient(val endpoint: String, val secret: String, val apiToken: String) {
   private[this] val client: Http = new Http()
     
@@ -56,6 +72,9 @@ class UbiregiClient(val endpoint: String, val secret: String, val apiToken: Stri
   }
 }
 object UbiregiClient {
+  def apply(endpoint: String, secret: String, apiToken: String): UbiregiClient = {
+    new UbiregiClient(endpoint, secret, apiToken)
+  }
   final val USER_AGENT = "User-Agent"
   final val AUTH_TOKEN = "X-Ubiregi-Auth-Token"
   final val APP_SECRET = "X-Ubiregi-App-Secret"

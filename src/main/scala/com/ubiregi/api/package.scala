@@ -2,6 +2,9 @@ package com.ubiregi
 import java.io.InputStream
 import java.io.FileInputStream
 
+/**
+ * Provides type aliases, utility functions, and so on for using UbiregiClient.
+ */
 package object api {
   type StringMap = Map[String, Any]
   type RequestHeader = Map[String, String]
