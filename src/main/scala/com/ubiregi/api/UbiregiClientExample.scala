@@ -1,5 +1,8 @@
 package com.ubiregi.api
 
+/**
+ * An example program using UbiregiClient.
+ */
 object UbiregiClientExample {
   def main(args: Array[String]): Unit = {
     val Array(endpoint, secret, apiToken) = args
