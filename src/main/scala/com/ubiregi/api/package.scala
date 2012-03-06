@@ -9,6 +9,8 @@ package object api {
   type BASE64Decoder = sun.misc.BASE64Decoder
   type ==>[-A, +B] = PartialFunction[A, B]
   
+  val Catcher = scala.util.control.Exception
+  
   //---- Utility Functions ----
   def encodeBASE64(source: String, encoding: String = "UTF-8"): String = {
     new BASE64Encoder().encode(source.getBytes(encoding))
@@ -18,7 +20,7 @@ package object api {
   }
   def openStream[A](path: String)(block: InputStream => A): A = {
     val stream = new FileInputStream(path)
-    try { block(stream) } finally { Cather.allCatch(stream.close()) }
+    try { block(stream) } finally { Catcher.allCatch(stream.close()) }
   }
   def readBytes(in: InputStream): Array[Byte] = {
     Iterator.continually(in.read()).takeWhile(_ != -1).map(_.toByte).toArray
