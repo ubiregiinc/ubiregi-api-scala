@@ -24,14 +24,13 @@ import UbiregiClient._
  * If you want to get the string response, you can use UbiregiClient#rawGet()
  * or UbiregiClient#rawPost() instead.
  */
-class UbiregiClient private(val endpoint: String, val secret: String, val apiToken: String, val userAgent: String = DEFAULT_USER_AGENT_NAME) {
-  private[this] val client: Http = new Http()
+class UbiregiClient private(val endpoint: String, val secret: String, val apiToken: String, val userAgent: String, val executor: Http) {
     
   /** Does shutdown of this client.
    *  Once this method is called, this client cannot be reusable.
    */
   def shutdown(): Unit = {
-    client.shutdown()
+    executor.shutdown()
   }
     
   /** Request headers for calling Ubiregi API.  The value of the variable
@@ -64,7 +63,7 @@ class UbiregiClient private(val endpoint: String, val secret: String, val apiTok
   def rawGet(urlOrPathInit: String, query: StringMap = Map(), extHeaders: RequestHeader): String = {
     val urlOrPath = if (urlOrPathInit.matches(HTTP_PREFIX_PATTERN)) urlOrPathInit else endpoint + urlOrPathInit
     val headers = defaultHeaders ++ extHeaders
-    client((url(urlOrPath) <:< headers) >- {s => s})
+    executor((url(urlOrPath) <:< headers) >- {s => s})
   }
   
   /** Does GET request on Ubiregi API.  The only difference from rawPost() is that this method doesn't return String, but [[net.liftweb.json.JsonAST.JArray]].
@@ -90,7 +89,7 @@ class UbiregiClient private(val endpoint: String, val secret: String, val apiTok
   def rawPost(urlOrPathInit: String, content: String, query: StringMap = Map(), extHeaders: RequestHeader = Map()): String = {
     val urlOrPath = if (urlOrPathInit.matches(HTTP_PREFIX_PATTERN)) urlOrPathInit else endpoint + urlOrPathInit
     val headers = defaultHeaders + (CONTENT_TYPE -> APPLICATION_JSON) ++ extHeaders
-    val result = client((url(urlOrPath).POST << (content.toString()) <:< headers) >- (s => s))
+    val result = executor((url(urlOrPath).POST << (content.toString()) <:< headers) >- (s => s))
     result
   }
     
@@ -107,6 +106,7 @@ class UbiregiClient private(val endpoint: String, val secret: String, val apiTok
     JsonParser.parse(responseBody)
   }
 }
+
 object UbiregiClient {
   /** Constructs a new instance of [[com.ubiregi.api.UbiregiClient]].
    *  For creating a new instance of [[com.ubiregi.api.UbiregiClient]], it is recommended
@@ -116,8 +116,8 @@ object UbiregiClient {
    *  @param secret secret token provided when you registered your app in "Ubiregi for Developers" site.
    *  @param apiToken api token provided when you installed your app in "Ubiregi for Developers" site.
    */
-  def apply(endpoint: String, secret: String, apiToken: String): UbiregiClient = {
-    new UbiregiClient(endpoint, secret, apiToken)
+  def apply(endpoint: String, secret: String, apiToken: String, userAgent: String = DEFAULT_USER_AGENT_NAME, executor: Http = new Http): UbiregiClient = {
+    new UbiregiClient(endpoint, secret, apiToken, userAgent, executor)
   }
   final val USER_AGENT = "User-Agent"
   final val DEFAULT_USER_AGENT_NAME = "Ubiregi-API-Client-in-Scala; en"
