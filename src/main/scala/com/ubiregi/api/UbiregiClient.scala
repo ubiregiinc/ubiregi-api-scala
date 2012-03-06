@@ -109,12 +109,15 @@ class UbiregiClient private(val endpoint: String, val secret: String, val apiTok
 
 object UbiregiClient {
   /** Constructs a new instance of [[com.ubiregi.api.UbiregiClient]].
-   *  For creating a new instance of [[com.ubiregi.api.UbiregiClient]], it is recommended
-   *  to use this method rather than new UbiegiClient(...).
+   *  For creating a new instance of [[com.ubiregi.api.UbiregiClient]], it is needed
+   *  to use this method not new UbiregiClient(...).
    *  
-   *  @param endpoint endpoint of Ubiregi API.
+   *  @param endpoint Endpoint of Ubiregi API.
    *  @param secret secret token provided when you registered your app in "Ubiregi for Developers" site.
-   *  @param apiToken api token provided when you installed your app in "Ubiregi for Developers" site.
+   *  @param apiToken API token provided when you installed your app in "Ubiregi for Developers" site.
+   *  @param userAgent content of User-Agent header. if not specified, [[DEFAULT_USER_AGENT_NAME]] is used.
+   *  @param executor Executor in dispatch. if not specified, instance of [[dispatch.Http]] is used.  If you this library in Google App Engine,
+   *  an instance of [[dispatch.gae.Http]] can be specified instead of [[dispatch.Http]].
    */
   def apply(endpoint: String, secret: String, apiToken: String, userAgent: String = DEFAULT_USER_AGENT_NAME, executor: Http = new Http): UbiregiClient = {
     new UbiregiClient(endpoint, secret, apiToken, userAgent, executor)
