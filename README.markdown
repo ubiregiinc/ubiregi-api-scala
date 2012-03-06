@@ -4,3 +4,7 @@ This project will provide Ubiregi API Clients written in Scala.
 
 Currently, this project is under development.
 
+# For Development
+
+* By running sbt gen-idea, project definition files for IntelliJ IDEA
+* By running sbt eclipse, project definition files for Scala IDE for Eclipse.
