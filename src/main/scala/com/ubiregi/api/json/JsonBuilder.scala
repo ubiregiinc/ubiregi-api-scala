@@ -2,7 +2,7 @@ package com.ubiregi.api.json
 import scala.util.DynamicVariable
 import net.liftweb.json.JsonAST
 
-/**
+/** == Overview ==
  * Provides a DSL for constructing JSON object(based on [[net.liftweb.json.JsonAST.JValue]]).
  * To use the DSL, the following code is needed for preparation:
  * 
@@ -59,3 +59,12 @@ class JsonBuilder {
   
   def $(elements: JsonAST.JValue*): JsonAST.JArray = JsonAST.JArray(elements.toList)
 }
+
+/**
+ * It is shorthand of (new JsonBuilder).
+ * You can use JsonBuilder object instead of (new JsonBuilder) as the followings:
+ * {{{
+ * import com.ubiregi.api.json.JsonBuilder._
+ * }}}
+ */
+object JsonBuilder extends JsonBuilder
