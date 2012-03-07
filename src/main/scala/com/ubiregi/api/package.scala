@@ -1,11 +1,14 @@
 package com.ubiregi
 import java.io.InputStream
 import java.io.FileInputStream
+import dispatch.HttpExecutor
 
 /**
  * Provides type aliases, utility functions, and so on for using UbiregiClient.
  */
 package object api {
+  type Id[T] = T
+  type Executor[TC[_]] = HttpExecutor { type HttpPackage[T] = TC[T] }
   type StringMap = Map[String, Any]
   type RequestHeader = Map[String, String]
   type BASE64Encoder = sun.misc.BASE64Encoder

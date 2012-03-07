@@ -1,4 +1,5 @@
-package com.ubiregi.api.json
+package com.ubiregi.example
+import com.ubiregi.api.json._
 
 /**
  * An example program using JsonBuilder.

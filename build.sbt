@@ -11,6 +11,7 @@ seq(assemblySettings: _*)
 libraryDependencies ++= Seq(
   "net.databinder" %% "dispatch-http" % "0.8.7",
   "net.databinder" %% "dispatch-json" % "0.8.7",
+  "net.databinder" %% "dispatch-nio" % "0.8.7",
   "net.databinder" %% "dispatch-gae" % "0.8.7",
   "net.liftweb" %% "lift-json" % "2.4"
 )
