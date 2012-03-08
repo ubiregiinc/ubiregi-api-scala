@@ -40,7 +40,7 @@ class JsonBuilder {
   
   implicit def pimpBindingFromString(arg: String): Binding = new Binding(arg)
   
-  implicit def pimpBindingFromSymbol(arg: Symbol): Binding = new Binding(arg.toString)
+  implicit def pimpBindingFromSymbol(arg: Symbol): Binding = new Binding(arg.name)
   
   implicit def int2JInt(arg: Int): JsonAST.JInt = JsonAST.JInt(arg)
   
