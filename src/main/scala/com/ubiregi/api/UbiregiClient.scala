@@ -14,7 +14,7 @@ import UbiregiClient._
  * 
  * Typical use case is as the followings:
  * {{{
- * val client = UbiregiClient[Id, Http]("http://localhost:3030/api/3/", "secret", "apiToken")
+ * val client = UbiregiClient[Id]("http://localhost:3030/api/3/", "secret", "apiToken")
  * val response: JsonAST.JValue = client.jsonGet("accounts/current")
  * }}}
  * 
@@ -25,10 +25,10 @@ import UbiregiClient._
  * or UbiregiClient#rawPost() instead.
  * 
  * This type constructor parameter TC is used as [[dispatch.HttpExecutor { type HttpPackage[T] = TC[T] }]].
- * If your HttpExecutor#HttpPackage[T] is just T, you must specify TC as [[com.ubiregi.api.Id]].
- * If your HttpExecutor#HttpPackage[T] is Future[T], you must specify TC as Future.
+ * If your HttpExecutor#HttpPackage[T] is just T, you must specify [[com.ubiregi.api.Id]] as TC.
+ * If your HttpExecutor#HttpPackage[T] is Future[T], you must specify Future as TC.
  */
-class UbiregiClient[TC[_], E <: Executor[TC]] private(val endpoint: String, val secret: String, val apiToken: String, val userAgent: String, val executor: E) {
+class UbiregiClient[TC[_]] private(val endpoint: String, val secret: String, val apiToken: String, val userAgent: String, val executor: Executor[TC]) {
     
   /** Does shutdown of this client.
    *  Once this method is called, this client cannot be reusable.
@@ -65,7 +65,7 @@ class UbiregiClient[TC[_], E <: Executor[TC]] private(val endpoint: String, val 
    * @param extHeaders HTTP request headers that users want to provide additionally.
    * @return Result of this request.
    */
-  def rawGet(urlOrPathInit: String, query: StringMap = Map(), extHeaders: RequestHeader): E#HttpPackage[String] = {
+  def rawGet(urlOrPathInit: String, query: StringMap = Map(), extHeaders: RequestHeader): TC[String] = {
     _get(urlOrPathInit, query, extHeaders, {s => s})
   }
   
@@ -88,7 +88,7 @@ class UbiregiClient[TC[_], E <: Executor[TC]] private(val endpoint: String, val 
    * @param extHeaders HTTP request headers that users want to provide additionally.
    * @return Result of this request.
    */
-  def rawPost(urlOrPathInit: String, content: String, query: StringMap = Map(), extHeaders: RequestHeader = Map()): E#HttpPackage[String] = {
+  def rawPost(urlOrPathInit: String, content: String, query: StringMap = Map(), extHeaders: RequestHeader = Map()): TC[String] = {
     _post(urlOrPathInit, content, query, extHeaders, {s => s})
   }
     
@@ -100,7 +100,7 @@ class UbiregiClient[TC[_], E <: Executor[TC]] private(val endpoint: String, val 
    * @param extHeaders HTTP request headers that users want to provide additionally.
    * @return Result of this request.  Typically, the type of the return value is [[net.liftweb.json.JsonAST.JArray]].
    */
-  def jsonPost(urlOrPathInit: String, content: String, query: StringMap = Map(), extHeaders: RequestHeader = Map()): E#HttpPackage[JsonAST.JValue] = {
+  def jsonPost(urlOrPathInit: String, content: String, query: StringMap = Map(), extHeaders: RequestHeader = Map()): TC[JsonAST.JValue] = {
     _post(urlOrPathInit, content, query, extHeaders, {s => JsonParser.parse(s)})
   }
 }
@@ -112,7 +112,7 @@ object UbiregiClient {
    *  
    *  Typical use case is as followings:
    *  {{{
-   *    val client = UbiregiClient[Id, Http](...)
+   *    val client = UbiregiClient[Id](...)
    *    val json = client.jsonGet("accounts/account")
    *    println(json \\ "id")
    *  }}}
@@ -120,7 +120,7 @@ object UbiregiClient {
    *  If your executor's execution result is not the plain type, you can code
    *  as folloinwgs:
    *  {{{
-   *    val client = UbiregiClient[Future, FutureHttp](...)
+   *    val client = UbiregiClient[Future](...)
    *    val jsonFuture: Future[JsonAST.JValue] = client.jsonGet("accounts/account")
    *    ...
    *  }}}
@@ -132,7 +132,7 @@ object UbiregiClient {
    *  @param executor Executor in dispatch. if not specified, instance of [[dispatch.Http]] is used.  If you this library in Google App Engine,
    *  an instance of [[dispatch.gae.Http]] can be specified instead of [[dispatch.Http]].
    */
-  def apply[TC[_], E <: Executor[TC]](endpoint: String, secret: String, apiToken: String, userAgent: String = DEFAULT_USER_AGENT_NAME, executor: E = new Http): UbiregiClient[TC, E] = {
+  def apply[TC[_]](endpoint: String, secret: String, apiToken: String, userAgent: String = DEFAULT_USER_AGENT_NAME, executor: Executor[TC] = new Http): UbiregiClient[TC] = {
     new UbiregiClient(endpoint, secret, apiToken, userAgent, executor)
   }
   final val USER_AGENT = "User-Agent"
