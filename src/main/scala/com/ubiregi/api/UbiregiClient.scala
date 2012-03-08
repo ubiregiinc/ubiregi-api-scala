@@ -49,13 +49,13 @@ class UbiregiClient[TC[_]] private(val endpoint: String, val secret: String, val
   def _get[X](urlOrPathInit: String, query: StringMap, extHeaders: RequestHeader, convertor: String => X): TC[X] = {
     val urlOrPath = if (urlOrPathInit.matches(HTTP_PREFIX_PATTERN)) urlOrPathInit else endpoint + urlOrPathInit
     val headers = defaultHeaders ++ extHeaders
-    executor((url(urlOrPath) <:< headers) >- convertor)
+    executor((url(urlOrPath) <<? query <:< headers) >- convertor)
   }
   
   def _post[X](urlOrPathInit: String, content: String, query: StringMap, extHeaders: RequestHeader = Map(), convertor: String => X): TC[X]= {
     val urlOrPath = if (urlOrPathInit.matches(HTTP_PREFIX_PATTERN)) urlOrPathInit else endpoint + urlOrPathInit
     val headers = defaultHeaders + (CONTENT_TYPE -> APPLICATION_JSON) ++ extHeaders
-    executor((url(urlOrPath).POST << (content.toString()) <:< headers) >- convertor)
+    executor((url(urlOrPath) <<? query << content.toString <:< headers) >- convertor)
   }
   
   /** Does GET request on Ubiregi API.  This method returns response as TC[String].  Typically, the return value is JSON-formatted String.
@@ -65,7 +65,7 @@ class UbiregiClient[TC[_]] private(val endpoint: String, val secret: String, val
    * @param extHeaders HTTP request headers that users want to provide additionally.
    * @return Result of this request.
    */
-  def rawGet(urlOrPathInit: String, query: StringMap = Map(), extHeaders: RequestHeader): TC[String] = {
+  def rawGet(urlOrPathInit: String, query: StringMap = Map(), extHeaders: RequestHeader = Map()): TC[String] = {
     _get(urlOrPathInit, query, extHeaders, {s => s})
   }
   

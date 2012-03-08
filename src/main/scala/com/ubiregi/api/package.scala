@@ -9,7 +9,7 @@ import dispatch.HttpExecutor
 package object api {
   type Id[T] = T
   type Executor[TC[_]] = HttpExecutor { type HttpPackage[T] = TC[T] }
-  type StringMap = Map[String, Any]
+  type StringMap = Map[String, String]
   type RequestHeader = Map[String, String]
   type BASE64Encoder = sun.misc.BASE64Encoder
   type BASE64Decoder = sun.misc.BASE64Decoder
