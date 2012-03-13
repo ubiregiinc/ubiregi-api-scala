@@ -11,7 +11,7 @@ object UbiregiClientExample {
   def main(args: Array[String]): Unit = {
     val Array(endpoint, secret, apiToken) = args
     val client = UbiregiClient[Id](endpoint, secret, apiToken)
-    val json =  client.jsonGet("""accounts/current""")
+    val json =  client.jsonGet("""accounts/2""")
     println(json)
   }
 }
