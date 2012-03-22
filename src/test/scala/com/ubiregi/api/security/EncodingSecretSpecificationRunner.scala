@@ -2,7 +2,7 @@ package com.ubiregi.api.security
 
 import specs2.run
 
-object EncryptSpecificationRunner extends App {
+object EncodingSecretSpecificationRunner extends App {
   run.main(Array(
     "com.ubiregi.api.security.EncryptSpecification"
   ))

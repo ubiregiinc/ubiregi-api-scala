@@ -9,7 +9,7 @@ import net.liftweb.json.JsonAST
  * @author Mizushima
  *
  */
-class EncryptSpecification extends Specification {
+class EncodingSecretSpecification extends Specification {
   """assume secret"""" should {
     val secret = "abcdefg"
     
