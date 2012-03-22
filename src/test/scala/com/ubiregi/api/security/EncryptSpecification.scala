@@ -25,7 +25,7 @@ class EncryptSpecification extends Specification {
       
     """encrypt(secret)""" in {
       val secret = "abcdefg"
-      val Array(salt, pass) = encrypt(secret).split(":")
+      val Array(salt, pass) = encode_secret(secret).split(":")
       sha1HexDigest(salt + "." + secret) must ===(pass)
     }
   }

@@ -6,14 +6,14 @@ import java.security.MessageDigest
 
 package object security {
   private final val SEPARATOR = ":"
-  def encrypt(secret: String): String = {
+  def encode_secret(secret: String): String = {
     def generateSalt(): String = {
       val random = SecureRandom.getInstance("SHA1PRNG");
       random.setSeed(System.currentTimeMillis())
       "%08x".format(random.nextInt())
     }
     val salt = generateSalt()
-    val hexDigest = sha1HexDigest(salt + "." + secret)
+    val hexDigest = sha1HexDigest(salt + secret)
     (salt + SEPARATOR + hexDigest)
   }
   def sha1HexDigest(from: String): String = {

@@ -1,5 +1,5 @@
 package com.ubiregi.api
-import com.ubiregi.api.security.encrypt
+import com.ubiregi.api.security.encode_secret
 
 import dispatch._
 import dispatch./._
@@ -44,7 +44,7 @@ class UbiregiClient[TC[_]] private(val endpoint: String, val secret: String, val
   val defaultHeaders: RequestHeader = Map(
     USER_AGENT -> userAgent,
     AUTH_TOKEN -> apiToken,
-    APP_SECRET -> encrypt(secret)
+    APP_SECRET -> encode_secret(secret)
   )
     
   def _get[X](urlOrPathInit: String, query: StringMap, extHeaders: RequestHeader, convertor: String => X): TC[X] = {
