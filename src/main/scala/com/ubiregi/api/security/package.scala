@@ -1,5 +1,6 @@
 package com.ubiregi.api
 
+import java.math.BigInteger
 import java.security.SecureRandom
 import java.security.MessageDigest
 
@@ -12,12 +13,14 @@ package object security {
       "%08x".format(random.nextInt())
     }
     val salt = generateSalt()
-    val sha1base64Encoded = sha1(secret + salt)
-    (sha1base64Encoded + SEPARATOR + salt)
+    val hexDigest = sha1HexDigest(secret + salt)
+    (hexDigest + SEPARATOR + salt)
   }
-  def sha1(from: String): String = {
-    val digester = MessageDigest.getInstance("SHA")
-    digester.update(from.getBytes("UTF-8"))
-    new BASE64Encoder().encode(digester.digest())
+  def sha1HexDigest(from: String): String = {
+    val sha1 = MessageDigest.getInstance("SHA")
+    sha1.reset()
+    sha1.update(from.getBytes("UTF-8"))
+    val xs = sha1.digest()
+    xs.map{n => "%02x".format(n & 0xff)}.mkString
   }
 }
