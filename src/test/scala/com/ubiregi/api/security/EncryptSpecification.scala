@@ -12,7 +12,6 @@ import net.liftweb.json.JsonAST
 class EncryptSpecification extends Specification {
   """assume secret"""" should {
     val secret = "abcdefg"
-    val Array(pass, salt) = encrypt(secret).split(":")
     
     """sha1HexDigest("abc")""" in {
       val secret = "abc"
