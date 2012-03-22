@@ -5,7 +5,7 @@ import java.security.MessageDigest
 
 package object security {
   private final val SEPARATOR = ":"
-  def encrypt(secret: String): (String, String) = {
+  def encrypt(secret: String): String = {
     def generateSalt(): String = {
       val random = SecureRandom.getInstance("SHA1PRNG");
       random.setSeed(System.currentTimeMillis())
@@ -13,8 +13,8 @@ package object security {
     }
     val salt = generateSalt()
     val digester = MessageDigest.getInstance("SHA")
-    digester.update((salt + SEPARATOR + secret).getBytes())
+    digester.update((salt + secret).getBytes())
     val base64Encoded = new BASE64Encoder().encode(digester.digest())
-    (base64Encoded, salt)
+    (base64Encoded + SEPARATOR + salt)
   }
 }
