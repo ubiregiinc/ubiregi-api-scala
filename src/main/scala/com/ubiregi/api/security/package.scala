@@ -12,9 +12,12 @@ package object security {
       "%08x".format(random.nextInt())
     }
     val salt = generateSalt()
+    val sha1base64Encoded = sha1(secret + salt)
+    (sha1base64Encoded + SEPARATOR + salt)
+  }
+  def sha1(from: String): String = {
     val digester = MessageDigest.getInstance("SHA")
-    digester.update((salt + secret).getBytes())
-    val base64Encoded = new BASE64Encoder().encode(digester.digest())
-    (base64Encoded + SEPARATOR + salt)
+    digester.update(from.getBytes("UTF-8"))
+    new BASE64Encoder().encode(digester.digest())
   }
 }
