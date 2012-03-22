@@ -24,10 +24,10 @@ class EncryptSpecification extends Specification {
       sha1HexDigest(secret) must === ("2fb5e13419fc89246865e7a324f476ec624e8740")
     }
       
-    """sha1HexDigest(secret + salt)""" in {
+    """encrypt(secret)""" in {
       val secret = "abcdefg"
-      val Array(pass, salt) = encrypt(secret).split(":")
-      sha1HexDigest(secret + salt) must ===(pass)
+      val Array(salt, pass) = encrypt(secret).split(":")
+      sha1HexDigest(salt + "." + secret) must ===(pass)
     }
   }
 }

@@ -13,8 +13,8 @@ package object security {
       "%08x".format(random.nextInt())
     }
     val salt = generateSalt()
-    val hexDigest = sha1HexDigest(secret + "." + salt)
-    (hexDigest + SEPARATOR + salt)
+    val hexDigest = sha1HexDigest(salt + "." + secret)
+    (salt + SEPARATOR + hexDigest)
   }
   def sha1HexDigest(from: String): String = {
     val sha1 = MessageDigest.getInstance("SHA")
