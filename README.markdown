@@ -1,6 +1,6 @@
 # Ubiregi-API-Client for Scala
 
-This project will provide Ubiregi API Clients written in Scala.
+This library provides Ubiregi API client written in Scala.  Using this library, you can access easily [Ubiregi API](http://ubiregiinc.github.com/ubiregi-api/).
 
 Note that this project is still experimental.
 
