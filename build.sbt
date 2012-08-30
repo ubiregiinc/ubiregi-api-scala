@@ -1,6 +1,6 @@
 organization := "com.ubiregi"
 
-name := "ubiregi_api_client_scala"
+name := "ubiregi_api_scala"
 
 version := "0.1.0"
 
