@@ -1,7 +1,7 @@
 package com.ubiregi
 import java.io.InputStream
 import java.io.FileInputStream
-import dispatch.HttpExecutor
+import dispatch.classic.HttpExecutor
 
 /**
  * Provides type aliases, utility functions, and so on for using UbiregiClient.
@@ -14,9 +14,9 @@ package object api {
   type BASE64Encoder = sun.misc.BASE64Encoder
   type BASE64Decoder = sun.misc.BASE64Decoder
   type ==>[-A, +B] = PartialFunction[A, B]
-  
+
   val Catcher = scala.util.control.Exception
-  
+
   //---- Utility Functions ----
   def encodeBASE64(source: String, encoding: String = "UTF-8"): String = {
     new BASE64Encoder().encode(source.getBytes(encoding))

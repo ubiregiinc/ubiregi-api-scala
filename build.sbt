@@ -8,20 +8,21 @@ scalaVersion := "2.9.2"
 
 seq(assemblySettings: _*)
 
-libraryDependencies ++= Seq(
-  "net.databinder" %% "dispatch-http" % "0.8.8",
-  "net.databinder" %% "dispatch-json" % "0.8.8",
-  "net.databinder" %% "dispatch-nio" % "0.8.8",
-  "net.databinder" %% "dispatch-gae" % "0.8.8",
+libraryDependencies ++= {
+val dispatchVersion = "0.8.9"
+Seq(
+  "net.databinder" %% "dispatch-http" % dispatchVersion,
+  "net.databinder" %% "dispatch-json" % dispatchVersion,
   "net.liftweb" % "lift-json_2.9.1" % "2.4"
 )
+}
 
 libraryDependencies ++= Seq(
-  "org.specs2" %% "specs2" % "1.12.1" % "test"
+  "org.specs2" %% "specs2" % "1.12.3" % "test"
 )
-  
+
 scalacOptions ++= Seq("-deprecation","-unchecked")
- 
+
 initialCommands in console += {
   Iterator("net.liftweb.json._").map("import "+).mkString("\n")
 }
