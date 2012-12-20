@@ -1,5 +1,5 @@
 package com.ubiregi.example
-import dispatch.Http
+import dispatch.classic.Http
 import net.liftweb.json.JsonAST
 
 import com.ubiregi.api._
