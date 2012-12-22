@@ -6,7 +6,11 @@ lib_managed
 src_managed
 project/boot
 .DS_Store
-project/plugins/project
+project/target
+project/project/target
+core/target
+example/target
+*.swp
 .idea
 .idea_modules
 .project
