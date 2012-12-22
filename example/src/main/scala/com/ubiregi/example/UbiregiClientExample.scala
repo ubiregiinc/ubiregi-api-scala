@@ -1,7 +1,7 @@
 package com.ubiregi.example
+
 import dispatch.classic.Http
 import net.liftweb.json.JsonAST
-
 import com.ubiregi.api._
 
 /**
